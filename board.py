@@ -17,7 +17,7 @@ class Board:
 
     def display(self):
         print(f"\nCurrent Turn: {self.current_turn.capitalize()}")
-        
+
         print("\n  a b c d e f g h")
 
         for i in range(8):
@@ -57,7 +57,13 @@ class Board:
         # Validate pawns
         if piece in ["P", "p"]:
             if not MoveValidator.is_valid_pawn_move(
-                    piece, sr, sc, er, ec):
+                piece,
+                sr,
+                sc,
+                er,
+                ec,
+                self.board
+            ):
                 print("Illegal pawn move.")
                 return
 
