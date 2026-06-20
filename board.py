@@ -1,5 +1,9 @@
+from move_validator import MoveValidator
+
 class Board:
     def __init__(self):
+        self.current_turn = "white"
+
         self.board = [
             ["r", "n", "b", "q", "k", "b", "n", "r"],
             ["p", "p", "p", "p", "p", "p", "p", "p"],
@@ -12,6 +16,8 @@ class Board:
         ]
 
     def display(self):
+        print(f"\nCurrent Turn: {self.current_turn.capitalize()}")
+        
         print("\n  a b c d e f g h")
 
         for i in range(8):
@@ -34,9 +40,31 @@ class Board:
 
         piece = self.board[sr][sc]
 
+        # White's turn
+        if self.current_turn == "white" and not piece.isupper():
+            print("It's White's turn.")
+            return
+
+        # Black's turn
+        if self.current_turn == "black" and not piece.islower():
+            print("It's Black's turn.")
+            return
+
         if piece == ".":
             print("No piece at starting position.")
             return
 
+        # Validate pawns
+        if piece in ["P", "p"]:
+            if not MoveValidator.is_valid_pawn_move(
+                    piece, sr, sc, er, ec):
+                print("Illegal pawn move.")
+                return
+
         self.board[er][ec] = piece
         self.board[sr][sc] = "."
+
+        if self.current_turn == "white":
+            self.current_turn = "black"
+        else:
+            self.current_turn = "white"
